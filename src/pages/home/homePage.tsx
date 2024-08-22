@@ -7,12 +7,17 @@ export const Home = () => {
     const employees = useSelector((state: RootState) => state.employees.list);
 
     return (
-        <div className={cl.cards}>
-            {employees.map((employee) => (
-                <div key={employee.id} className={cl.card}> 
-                    <strong>{employee.name}</strong> - {employee.role}
-                </div>
-            ))}
+        <div className={cl.home}>
+            <div>
+
+            </div>
+            <div className={cl.cards}>
+                {employees.map((employee) => (
+                    <div key={employee.id} className={cl.card}> 
+                        <strong>{employee.name}</strong> - {employee.role}
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }
