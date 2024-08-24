@@ -14,6 +14,7 @@ export const Home = () => {
     const employees = useSelector((state: RootState) => state.employees.list);
     const selectedEmployee = useSelector((state: RootState) => state.employee);
     const [sortedEmployees, setSortedEmployees] = useState(employees);
+    const [backEmployees, setBackEmployees] = useState(employees);
     const [isChecked, setIsChecked] = useState(false);
     const [isOpenForm, setIsOpenForm] = useState(false);
     const [isOpenAddForm, setIsOpenAddForm] = useState(false);
@@ -69,9 +70,10 @@ export const Home = () => {
 
     useEffect(() => {
         if (isChecked) {
-            setSortedEmployees(employees.filter(employee => employee.isArchive === true))
+            setBackEmployees(sortedEmployees)
+            setSortedEmployees(sortedEmployees.filter(employee => employee.isArchive === true))
         } else {
-            setSortedEmployees(employees)
+            setSortedEmployees(backEmployees)
         }
     }, [employees, isChecked]);
 
@@ -79,6 +81,7 @@ export const Home = () => {
         <div className={cl.home}>
             <FiltersAndSort 
                 employees={employees}
+                sortedEmployees={sortedEmployees}
                 setSortedEmployees={setSortedEmployees}
                 isChecked={isChecked}
                 setIsChecked={setIsChecked}
@@ -87,7 +90,7 @@ export const Home = () => {
                 employees={sortedEmployees} 
                 onEmployeeClick={handleFormChange} 
             />
-            <div onClick={handleAddForm}>
+            <div onClick={handleAddForm} className={cl.add_button}>
                 <p>Добавить сотрудника</p>
             </div>
             {isOpenForm && (

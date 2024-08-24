@@ -5,9 +5,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #1f2325, #0b121f);
+  background: linear-gradient(45deg, #2c3e50, #4c657f, #1a2a3a, #36476f);
   background-size: 400% 400%;
-  animation: gradientAnimation 5s ease infinite;
+  animation: gradientAnimation 8s ease infinite;
   color: #000000;
   box-sizing: border-box;
 }
@@ -16,8 +16,19 @@ p {
   margin: 0;
 }
 
+select {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
 @keyframes gradientAnimation {
-  0% { background-position: 0% 0%; }
-  50% { background-position: 100% 100%; }
-  100% { background-position: 0% 0%; }
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 50% 0%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
 }
