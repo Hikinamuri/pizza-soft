@@ -1,0 +1,21 @@
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    width: 180px;
+    padding: 5px 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.card p {
+    margin-top: auto;
+    white-space: pre;
+}

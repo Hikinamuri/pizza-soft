@@ -24,7 +24,7 @@ export const employeeSlice = createSlice({
     reducers: {
         setEmployee(state, action) {
             return { ...state, ...action.payload };
-          },
+        },
         updateEmployeeField(state, action) {
             const { field, value } = action.payload;
             (state as any)[field] = value;
