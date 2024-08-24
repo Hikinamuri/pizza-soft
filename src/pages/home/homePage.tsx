@@ -9,12 +9,12 @@ export const Home = () => {
 
     const sortEmployees = (event) => {
         const sortType = event.target.value;
-        const fixBirthdayList = sortedEmployees.map(obj => {
+        let sortedList = [...sortedEmployees];
+        sortedList.map(obj => {
             const {birthday, ...other} = obj
             const newBirthday = birthday.split('.').reverse().join('-')
             return {birthday: newBirthday, ...other};
         })
-        let sortedList = fixBirthdayList;
 
         switch (sortType) {
             case 'name-up':
@@ -36,10 +36,32 @@ export const Home = () => {
         setSortedEmployees(sortedList)
     }
 
+    const filterList = (event) => {
+        const filterType = event.target.value;
+        if(!filterType) {
+            return;
+        }
+        if (filterType === 'all') {
+            setSortedEmployees(employees)
+            return
+        }
+        const filtredList = employees.filter((employee) => employee.role === filterType)
+        setSortedEmployees(filtredList)
+    }
+
     return (
         <div className={cl.home}>
             <div>
-                Фильтры
+                <select name="" onChange={filterList}>
+                    <option value="all">Любая должность</option>
+                    <option value="cook">Повар</option>
+                    <option value="waiter">Официант</option>
+                    <option value="driver">Водитель</option>
+                </select>
+                <div>
+                    <input type="checkbox" name="" id="" />
+                    <label htmlFor="">В архиве</label>
+                </div>
             </div>
             <select name="" onChange={sortEmployees}>
                 <option value="name-up">По имени (А&#8594;Я)</option>
@@ -51,7 +73,7 @@ export const Home = () => {
                 {sortedEmployees.map((employee) => (
                     <div key={employee.id} className={cl.card}> 
                         <strong>{employee.name}</strong>
-                        <p>{employee.birthday}</p>
+                        <p>{employee.role}</p>
                         <p>{employee.phone}</p>
                     </div>
                 ))}
