@@ -1,10 +1,10 @@
 import React from 'react';
 import cl from './FiltersAndSort.module.scss';
 
-export const FiltersAndSort = ({ employees, setSortedEmployees, isChecked, setIsChecked }) => {
+export const FiltersAndSort = ({ employees, sortedEmployees, setSortedEmployees, isChecked, setIsChecked }) => {
     const sortEmployees = (event) => {
         const sortType = event.target.value;
-        let sortedList = [...employees];
+        let sortedList = [...sortedEmployees];
         sortedList = sortedList.map(obj => {
             const {birthday, ...other} = obj;
             const newBirthday = birthday.split('.').reverse().join('-');
@@ -48,6 +48,12 @@ export const FiltersAndSort = ({ employees, setSortedEmployees, isChecked, setIs
                 <option value="waiter">Официант</option>
                 <option value="driver">Водитель</option>
             </select>
+            <select onChange={sortEmployees}>
+                <option value="name-up">По имени (А&#8594;Я)</option>
+                <option value="name-down">По имени (Я&#8592;А)</option>
+                <option value="birthday-up">По дате рождения &#8593;</option>
+                <option value="birthday-down">По дате рождения &#8595;</option>
+            </select>
             <div className={cl.checkboxContainer}>
                 <input 
                     type="checkbox" 
@@ -56,14 +62,6 @@ export const FiltersAndSort = ({ employees, setSortedEmployees, isChecked, setIs
                     onChange={handleCheckboxChange}
                 />
                 <label htmlFor="archive-checkbox">В архиве</label>
-            </div>
-            <div className={cl.sortOptions}>
-                <select onChange={sortEmployees}>
-                    <option value="name-up">По имени (А&#8594;Я)</option>
-                    <option value="name-down">По имени (Я&#8592;А)</option>
-                    <option value="birthday-up">По дате рождения &#8593;</option>
-                    <option value="birthday-down">По дате рождения &#8595;</option>
-                </select>
             </div>
         </div>
     );

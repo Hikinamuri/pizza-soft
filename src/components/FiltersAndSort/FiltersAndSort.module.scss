@@ -1,13 +1,13 @@
 .filtersAndSort {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     gap: 15px;
     padding: 5px;
     background-color: #f5f5f5;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 100%;
+    width: 95%;
     margin: 0 auto;
 }
 
@@ -34,6 +34,7 @@
 
 .filtersAndSort label {
     font-size: 16px;
+    white-space: nowrap;
     color: #000000;
     cursor: pointer;
 }
@@ -43,23 +44,27 @@
     align-items: center;
 }
 
-.filtersAndSort .sort-options {
-    display: flex;
-    flex-direction: column;
-}
+@media (max-width: 570px) {
+    .filtersAndSort {
+        flex-direction: column;
+    }
 
-.filtersAndSort .sort-options select {
-    width: 100%;
-    padding: 8px;
-    font-size: 16px;
-    border: 1px solid #dddddd;
-    border-radius: 4px;
-    background-color: #ffffff;
-    cursor: pointer;
-    transition: border-color 0.2s ease-in-out;
-}
+    .filtersAndSort select{
+        width: 100%;
+        font-size: 14px;
+    }
 
-.filtersAndSort .sort-options select:focus {
-    border-color: #0056b3;
-    outline: none;
+    .filtersAndSort select option {
+        font-size: 12px;
+    }
+
+    .filtersAndSort .checkboxContainer {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .filtersAndSort label {
+        font-size: 14px;
+    }
 }
