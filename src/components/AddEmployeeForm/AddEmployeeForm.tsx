@@ -39,14 +39,16 @@ export const AddEmployeeForm = ({ newEmployee, setNewEmployee, onAdd, onClose })
                     <option value="waiter">Официант</option>
                     <option value="driver">Водитель</option>
                 </select>
-                <input 
-                    type="checkbox"
-                    name="isArchive"
-                    id="archive-checkbox"
-                    checked={newEmployee.isArchive}
-                    onChange={handleNewEmployeeChange}
-                />
-                <label htmlFor="archive-checkbox">В архиве</label>
+                <div className={cl.checkboxContainer}>
+                    <input 
+                        type="checkbox"
+                        name="isArchive"
+                        id="add_archive"
+                        checked={newEmployee.isArchive}
+                        onChange={handleNewEmployeeChange}
+                    />
+                    <label htmlFor="add_archive">В архиве</label>
+                </div>
                 <button onClick={onAdd}>Добавить</button>
             </div>
         </div>
