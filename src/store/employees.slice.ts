@@ -3,7 +3,6 @@ import initialBase from '../utils/employees.json'
 
 const initialState = {
     list: initialBase,
-    filteredList: initialBase,
 }
 
 export const employeesSlice = createSlice({
@@ -12,16 +11,16 @@ export const employeesSlice = createSlice({
     reducers: {
         setEmployees: (state, action) => {
             state.list = action.payload;
-            state.filteredList = action.payload;
         },
-        filterEmployees(state, action) {
-            const filter = action.payload;
-            state.filteredList = state.list.filter(employee =>
-                console.log(filter, employee)
-            );
+        updateEmployee: (state, action) => {
+            const updatedEmployee = action.payload;
+            const index = state.list.findIndex(employee => employee.id === updatedEmployee.id);
+            if (index !== -1) {
+                state.list[index] = { ...state.list[index], ...updatedEmployee };
+            }
         },
     },
 })
 
-export const { setEmployees, filterEmployees } = employeesSlice.actions;
+export const { setEmployees, updateEmployee } = employeesSlice.actions;
 export default employeesSlice.reducer;

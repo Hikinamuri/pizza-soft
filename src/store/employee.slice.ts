@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export interface EmployeeState {
     id: number,
     name: string,
-    isArcive: boolean,
+    isArchive: boolean,
     role: string,
     phone: string,
     birthday: string,
@@ -12,7 +12,7 @@ export interface EmployeeState {
 const initialState: EmployeeState = {
     id: 0,
     name: 'string',
-    isArcive: true,
+    isArchive: true,
     role: 'string',
     phone: 'string',
     birthday: 'string',

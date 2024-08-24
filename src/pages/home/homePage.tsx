@@ -1,27 +1,45 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { employeeActions } from '../../store/employee.slice.ts';
+import { employeesSlice } from '../../store/employees.slice.ts';
 import { RootState } from '../../store/store.ts'; 
 import cl from './homePage.module.scss';
 
 export const Home = () => {
+    const dispatch = useDispatch()
     const employees = useSelector((state: RootState) => state.employees.list);
+    const selectedEmployee = useSelector((state: RootState) => state.employee);
     const [sortedEmployees, setSortedEmployees] = useState(employees);
     const [isChecked, setIsChecked] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
 
-    const handleFormChange = () => {
-        setIsOpen(!isOpen)
+    const handleFormChange = (employee) => {
+        dispatch(employeeActions.setEmployee(employee));
+        setIsOpen(true)
     }
+
+    const handleFormClose = () => {
+        setIsOpen(false)
+    }
+
+    const handleInputChange = (e) => {
+        const {name, type, value, checked} = e.target;
+
+        const inputValue = type === 'checkbox' ? checked : value;
+        
+        dispatch(employeeActions.updateEmployeeField({ field: name, value: inputValue }));
+
+        const updatedEmployee = { ...selectedEmployee, [name]: inputValue };
+        dispatch(employeesSlice.actions.updateEmployee(updatedEmployee));
+    };
 
     const handleCheckboxChange = (event) => {
         const isChecked = event.target.checked;
-        console.log(isChecked)
         setIsChecked(isChecked)
-        const archiveList = [...sortedEmployees];
 
+        const archiveList = [...employees];
         isChecked ? 
-            setSortedEmployees(archiveList.filter(employee => employee.isArchive === true))
-            : 
+            setSortedEmployees(archiveList.filter(employee => employee.isArchive === true)) :
             setSortedEmployees(employees)
     };
 
@@ -79,6 +97,14 @@ export const Home = () => {
         };
     }, [isOpen]);
 
+    useEffect(() => {
+        if (isChecked) {
+            setSortedEmployees(employees.filter(employee => employee.isArchive === true))
+        } else {
+            setSortedEmployees(employees)
+        }
+    }, [employees, isChecked]);
+
     return (
         <div className={cl.home}>
             <div>
@@ -106,17 +132,50 @@ export const Home = () => {
             </select>
             <div className={cl.cards}>
                 {sortedEmployees.map((employee) => (
-                    <div key={employee.id} className={cl.card} onClick={handleFormChange}> 
+                    <div key={employee.id} className={cl.card} onClick={() => handleFormChange(employee)}> 
                         <strong>{employee.name}</strong>
-                        <p>{employee.birthday}</p>
+                        <p>{employee.role}</p>
                         <p>{employee.phone}</p>
                     </div>
                 ))}
             </div>
             {isOpen ? 
-                <div className={cl.form} onClick={handleFormChange}>
+                <div className={cl.form} onClick={handleFormClose}>
                     <div className={cl.form_change} onClick={(e) => e.stopPropagation()}>
-
+                        <input 
+                            type="text" 
+                            placeholder="Имя сотрудника"
+                            name="name"
+                            value={selectedEmployee.name}
+                            onChange={handleInputChange}
+                        />
+                        <input 
+                            type="text" 
+                            placeholder="Телефон"
+                            name="phone"
+                            value={selectedEmployee.phone}
+                            onChange={handleInputChange}
+                        />
+                        <input 
+                            type="text" 
+                            placeholder="Дата рождения"
+                            name="birthday"
+                            value={selectedEmployee.birthday}
+                            onChange={handleInputChange}
+                        />
+                        <select name="role" value={selectedEmployee.role} onChange={handleInputChange}>
+                            <option value="cook">Повар</option>
+                            <option value="waiter">Официант</option>
+                            <option value="driver">Водитель</option>
+                        </select>
+                        <input 
+                            type="checkbox"
+                            name="isArchive"
+                            id="archive-checkbox"
+                            checked={selectedEmployee.isArchive}
+                            onChange={handleInputChange}
+                        />
+                        <label htmlFor="archive-checkbox">В архиве</label>
                     </div>
                 </div> 
                 : 
