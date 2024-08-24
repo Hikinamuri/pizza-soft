@@ -10,7 +10,11 @@ export const EmployeeList = ({ employees, onEmployeeClick }) => (
                 onClick={() => onEmployeeClick(employee)}
             > 
                 <strong>{employee.name}</strong>
-                <p>{employee.role}</p>
+                <p>
+                    {employee.role === 'cook' && 'Повар'}
+                    {employee.role === 'waiter' && 'Официант'}
+                    {employee.role === 'driver' && 'Водитель'}
+                </p>
                 <p>{employee.phone}</p>
             </div>
         ))}
