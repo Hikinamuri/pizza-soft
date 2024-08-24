@@ -23,6 +23,7 @@ export const EmployeeEditForm = ({ employee, onClose }) => {
     return (
         <div className={cl.form} onClick={onClose}>
             <div className={cl.form_change} onClick={(e) => e.stopPropagation()}>
+                <h3>Изменить параметры сотрудника</h3>
                 <input 
                     type="text" 
                     placeholder="Имя сотрудника"
@@ -49,14 +50,16 @@ export const EmployeeEditForm = ({ employee, onClose }) => {
                     <option value="waiter">Официант</option>
                     <option value="driver">Водитель</option>
                 </select>
-                <input 
-                    type="checkbox"
-                    name="isArchive"
-                    id="archive-checkbox"
-                    checked={employee.isArchive}
-                    onChange={handleInputChange}
-                />
-                <label htmlFor="archive-checkbox">В архиве</label>
+                <div className={cl.checkboxContainer}>
+                    <input 
+                        type="checkbox"
+                        name="isArchive"
+                        id="archive-checkbox"
+                        checked={employee.isArchive}
+                        onChange={handleInputChange}
+                    />
+                    <label htmlFor="archive-checkbox">В архиве</label>
+                </div>
             </div>
         </div>
     );
