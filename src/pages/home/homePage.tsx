@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store.ts'; 
 import cl from './homePage.module.scss';
@@ -7,6 +7,11 @@ export const Home = () => {
     const employees = useSelector((state: RootState) => state.employees.list);
     const [sortedEmployees, setSortedEmployees] = useState(employees);
     const [isChecked, setIsChecked] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+
+    const handleFormChange = () => {
+        setIsOpen(!isOpen)
+    }
 
     const handleCheckboxChange = (event) => {
         const isChecked = event.target.checked;
@@ -22,8 +27,8 @@ export const Home = () => {
 
     const sortEmployees = (event) => {
         const sortType = event.target.value;
-        let sortedList = [...sortedEmployees];
-        sortedList.map(obj => {
+        let employeesList = [...sortedEmployees];
+        const sortedList = employeesList.map(obj => {
             const {birthday, ...other} = obj
             const newBirthday = birthday.split('.').reverse().join('-')
             return {birthday: newBirthday, ...other};
@@ -62,6 +67,18 @@ export const Home = () => {
         setSortedEmployees(filtredList)
     }
 
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, [isOpen]);
+
     return (
         <div className={cl.home}>
             <div>
@@ -89,13 +106,22 @@ export const Home = () => {
             </select>
             <div className={cl.cards}>
                 {sortedEmployees.map((employee) => (
-                    <div key={employee.id} className={cl.card}> 
+                    <div key={employee.id} className={cl.card} onClick={handleFormChange}> 
                         <strong>{employee.name}</strong>
-                        <p>{employee.isArchive ? 'В архиве' : 'Нет'}</p>
+                        <p>{employee.birthday}</p>
                         <p>{employee.phone}</p>
                     </div>
                 ))}
             </div>
+            {isOpen ? 
+                <div className={cl.form} onClick={handleFormChange}>
+                    <div className={cl.form_change} onClick={(e) => e.stopPropagation()}>
+
+                    </div>
+                </div> 
+                : 
+                null
+            }
         </div>
     );
 }
