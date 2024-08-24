@@ -1,0 +1,65 @@
+.filtersAndSort {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding: 5px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin: 0 auto;
+}
+
+.filtersAndSort select {
+    display: flex;
+    width: auto;
+    padding: 8px 10px;
+    font-size: 16px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.filtersAndSort select:focus {
+    border-color: #0056b3;
+    outline: none;
+}
+
+.filtersAndSort input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.filtersAndSort label {
+    font-size: 16px;
+    color: #000000;
+    cursor: pointer;
+}
+
+.filtersAndSort .checkbox-container {
+    display: flex;
+    align-items: center;
+}
+
+.filtersAndSort .sort-options {
+    display: flex;
+    flex-direction: column;
+}
+
+.filtersAndSort .sort-options select {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.filtersAndSort .sort-options select:focus {
+    border-color: #0056b3;
+    outline: none;
+}

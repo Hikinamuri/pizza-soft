@@ -1,4 +1,5 @@
 import React from 'react';
+import cl from './FiltersAndSort.module.scss';
 
 export const FiltersAndSort = ({ employees, setSortedEmployees, isChecked, setIsChecked }) => {
     const sortEmployees = (event) => {
@@ -40,14 +41,14 @@ export const FiltersAndSort = ({ employees, setSortedEmployees, isChecked, setIs
     };
 
     return (
-        <div>
+        <div className={cl.filtersAndSort}>
             <select onChange={filterList}>
                 <option value="all">Любая должность</option>
                 <option value="cook">Повар</option>
                 <option value="waiter">Официант</option>
                 <option value="driver">Водитель</option>
             </select>
-            <div>
+            <div className={cl.checkboxContainer}>
                 <input 
                     type="checkbox" 
                     id="archive-checkbox"
@@ -56,12 +57,14 @@ export const FiltersAndSort = ({ employees, setSortedEmployees, isChecked, setIs
                 />
                 <label htmlFor="archive-checkbox">В архиве</label>
             </div>
-            <select onChange={sortEmployees}>
-                <option value="name-up">По имени (А&#8594;Я)</option>
-                <option value="name-down">По имени (Я&#8592;А)</option>
-                <option value="birthday-up">По дате рождения &#8593;</option>
-                <option value="birthday-down">По дате рождения &#8595;</option>
-            </select>
+            <div className={cl.sortOptions}>
+                <select onChange={sortEmployees}>
+                    <option value="name-up">По имени (А&#8594;Я)</option>
+                    <option value="name-down">По имени (Я&#8592;А)</option>
+                    <option value="birthday-up">По дате рождения &#8593;</option>
+                    <option value="birthday-down">По дате рождения &#8595;</option>
+                </select>
+            </div>
         </div>
     );
 };
