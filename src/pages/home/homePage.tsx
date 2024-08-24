@@ -6,6 +6,19 @@ import cl from './homePage.module.scss';
 export const Home = () => {
     const employees = useSelector((state: RootState) => state.employees.list);
     const [sortedEmployees, setSortedEmployees] = useState(employees);
+    const [isChecked, setIsChecked] = useState(false);
+
+    const handleCheckboxChange = (event) => {
+        const isChecked = event.target.checked;
+        console.log(isChecked)
+        setIsChecked(isChecked)
+        const archiveList = [...sortedEmployees];
+
+        isChecked ? 
+            setSortedEmployees(archiveList.filter(employee => employee.isArchive === true))
+            : 
+            setSortedEmployees(employees)
+    };
 
     const sortEmployees = (event) => {
         const sortType = event.target.value;
@@ -59,8 +72,13 @@ export const Home = () => {
                     <option value="driver">Водитель</option>
                 </select>
                 <div>
-                    <input type="checkbox" name="" id="" />
-                    <label htmlFor="">В архиве</label>
+                    <input 
+                        type="checkbox" 
+                        id="archive-checkbox"
+                        checked={isChecked}
+                        onChange={handleCheckboxChange}
+                    />
+                    <label htmlFor="archive-checkbox">В архиве</label>
                 </div>
             </div>
             <select name="" onChange={sortEmployees}>
@@ -73,7 +91,7 @@ export const Home = () => {
                 {sortedEmployees.map((employee) => (
                     <div key={employee.id} className={cl.card}> 
                         <strong>{employee.name}</strong>
-                        <p>{employee.role}</p>
+                        <p>{employee.isArchive ? 'В архиве' : 'Нет'}</p>
                         <p>{employee.phone}</p>
                     </div>
                 ))}
