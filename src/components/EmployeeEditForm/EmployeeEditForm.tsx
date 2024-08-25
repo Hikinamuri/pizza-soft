@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store.ts'; 
 import { employeeActions } from '../../store/employee.slice.ts';
 import { employeesSlice } from '../../store/employees.slice.ts';
+import InputMask from 'react-input-mask';
 
 export const EmployeeEditForm = ({ employee, onClose }) => {
     const dispatch = useDispatch()
@@ -31,20 +32,28 @@ export const EmployeeEditForm = ({ employee, onClose }) => {
                     value={employee.name}
                     onChange={handleInputChange}
                 />
-                <input 
-                    type="text" 
-                    placeholder="Телефон"
-                    name="phone"
+                <InputMask
+                    mask="+7 (999) 999-99-99"
                     value={employee.phone}
                     onChange={handleInputChange}
-                />
-                <input 
-                    type="text" 
-                    placeholder="Дата рождения"
-                    name="birthday"
+                >
+                    {() => <input
+                        type="text"
+                        placeholder="Телефон"
+                        name="phone"
+                    />}
+                </InputMask>
+                <InputMask
+                    mask="9999-99-99"
                     value={employee.birthday}
                     onChange={handleInputChange}
-                />
+                >
+                    {() => <input
+                        type="text"
+                        placeholder="Дата рождения (дд-мм-гггг)"
+                        name="birthday"
+                    />}
+                </InputMask>
                 <select name="role" value={employee.role} onChange={handleInputChange}>
                     <option value="cook">Повар</option>
                     <option value="waiter">Официант</option>
