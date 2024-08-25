@@ -40,14 +40,14 @@ export const FiltersAndSort = ({ employees, isChecked, setIsChecked }) => {
             if (filterType === 'all') {
                 filteredEmployees.push({
                     ...employee,
-                    isVisible: employee.isArchive == isChecked,
+                    isVisible: employee.isArchive === isChecked,
                     isFiltered: true
                 })
             } else {
                 if (employee.role === filterType) {
                     filteredEmployees.push({
                         ...employee,
-                        isVisible: employee.isArchive == isChecked,
+                        isVisible: employee.isArchive === isChecked,
                         isFiltered: true
                     })
                 } else {
@@ -69,7 +69,7 @@ export const FiltersAndSort = ({ employees, isChecked, setIsChecked }) => {
         employees.forEach(employee => {
             filteredEmployees.push({
                 ...employee,
-                isVisible: employee.isFiltered && employee.isArchive == event.target.checked
+                isVisible: employee.isFiltered && employee.isArchive === event.target.checked
             })
         });
 

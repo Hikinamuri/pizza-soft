@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { employeeActions } from '../../store/employee.slice.ts';
 import { employeesSlice } from '../../store/employees.slice.ts';
@@ -7,6 +7,7 @@ import { FiltersAndSort } from '../../components/FiltersAndSort/FiltersAndSort.t
 import { EmployeeList } from '../../components/EmployeeList/EmployeeList.tsx';
 import { EmployeeEditForm } from '../../components/EmployeeEditForm/EmployeeEditForm.tsx';
 import { AddEmployeeForm } from '../../components/AddEmployeeForm/AddEmployeeForm.tsx';
+
 import cl from './homePage.module.scss';
 
 export const Home = () => {
