@@ -9,11 +9,6 @@ export const FiltersAndSort = ({ employees, isChecked, setIsChecked }) => {
     const sortEmployees = (event) => {
         const sortType = event.target.value;
         let sortedList = [...employees];
-        sortedList = sortedList.map(obj => {
-            const {birthday, ...other} = obj;
-            const newBirthday = birthday.split('.').reverse().join('-');
-            return {birthday: newBirthday, ...other};
-        });
 
         switch (sortType) {
             case 'name-up':

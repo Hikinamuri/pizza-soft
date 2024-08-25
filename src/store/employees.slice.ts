@@ -5,7 +5,8 @@ const initialState = {
     list: initialBase.map(employee => ({
       ...employee,
       isVisible: !employee.isArchive,
-      isFiltered: true
+      isFiltered: true,
+      birthday: employee.birthday.split('.').reverse().join('.')
     })),
   };
 

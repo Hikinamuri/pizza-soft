@@ -1,4 +1,5 @@
 import React from 'react';
+import InputMask from 'react-input-mask';
 import cl from './AddEmployeeForm.module.scss';
 
 export const AddEmployeeForm = ({ newEmployee, setNewEmployee, onAdd, onClose }) => {
@@ -20,20 +21,28 @@ export const AddEmployeeForm = ({ newEmployee, setNewEmployee, onAdd, onClose })
                     value={newEmployee.name}
                     onChange={handleNewEmployeeChange}
                 />
-                <input
-                    type="text"
-                    placeholder="Телефон"
-                    name="phone"
+                <InputMask
+                    mask="+7 (999) 999-99-99"
                     value={newEmployee.phone}
                     onChange={handleNewEmployeeChange}
-                />
-                <input
-                    type="text"
-                    placeholder="Дата рождения"
-                    name="birthday"
+                >
+                    {() => <input
+                        type="text"
+                        placeholder="Телефон"
+                        name="phone"
+                    />}
+                </InputMask>
+                <InputMask
+                    mask="9999-99-99"
                     value={newEmployee.birthday}
                     onChange={handleNewEmployeeChange}
-                />
+                >
+                    {() => <input
+                        type="text"
+                        placeholder="Дата рождения (дд-мм-гггг)"
+                        name="birthday"
+                    />}
+                </InputMask>
                 <select name="role" value={newEmployee.role} onChange={handleNewEmployeeChange}>
                     <option value="cook">Повар</option>
                     <option value="waiter">Официант</option>
