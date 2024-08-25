@@ -3,10 +3,25 @@ import cl from './FiltersAndSort.module.scss';
 import { useDispatch } from 'react-redux';
 import { employeesSlice } from '../../store/employees.slice.ts';
 
-export const FiltersAndSort = ({ employees, isChecked, setIsChecked }) => {
+interface Employee {
+    name: string;
+    birthday: string;
+    role: string;
+    isArchive: boolean;
+    isVisible?: boolean;
+    isFiltered?: boolean;
+}
+
+interface FiltersAndSortProps {
+    employees: Employee[];
+    isChecked: boolean;
+    setIsChecked: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export const FiltersAndSort: React.FC<FiltersAndSortProps> = ({ employees, isChecked, setIsChecked }) => {
     const dispatch = useDispatch();
 
-    const sortEmployees = (event) => {
+    const sortEmployees = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const sortType = event.target.value;
         let sortedList = [...employees];
 
@@ -25,56 +40,43 @@ export const FiltersAndSort = ({ employees, isChecked, setIsChecked }) => {
                 break;
             default:
                 break;
-        };
+        }
 
-        dispatch(employeesSlice.actions.setEmployees(sortedList))
+        dispatch(employeesSlice.actions.setEmployees(sortedList));
     };
 
-    const filterList = (event) => {
+    const filterList = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const filterType = event.target.value;
         if (!filterType) return;
 
-        let filteredEmployees = [];
-
-        employees.forEach(employee => {
+        let filteredEmployees = employees.map(employee => {
             if (filterType === 'all') {
-                filteredEmployees.push({
+                return {
                     ...employee,
                     isVisible: employee.isArchive === isChecked,
                     isFiltered: true
-                })
+                };
             } else {
-                if (employee.role === filterType) {
-                    filteredEmployees.push({
-                        ...employee,
-                        isVisible: employee.isArchive === isChecked,
-                        isFiltered: true
-                    })
-                } else {
-                    filteredEmployees.push({
-                        ...employee,
-                        isVisible: false,
-                        isFiltered: false
-                    })
-                }
+                return {
+                    ...employee,
+                    isVisible: employee.role === filterType && employee.isArchive === isChecked,
+                    isFiltered: employee.role === filterType
+                };
             }
         });
 
-        dispatch(employeesSlice.actions.setEmployees(filteredEmployees))
+        dispatch(employeesSlice.actions.setEmployees(filteredEmployees));
     };
 
-    const handleCheckboxChange = (event) => {
-        let filteredEmployees = [];
+    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const checked = event.target.checked;
+        let filteredEmployees = employees.map(employee => ({
+            ...employee,
+            isVisible: employee.isFiltered && employee.isArchive === checked
+        }));
 
-        employees.forEach(employee => {
-            filteredEmployees.push({
-                ...employee,
-                isVisible: employee.isFiltered && employee.isArchive === event.target.checked
-            })
-        });
-
-        dispatch(employeesSlice.actions.setEmployees(filteredEmployees))
-        setIsChecked(event.target.checked);
+        dispatch(employeesSlice.actions.setEmployees(filteredEmployees));
+        setIsChecked(checked);
     };
 
     return (
