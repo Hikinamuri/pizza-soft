@@ -13,22 +13,22 @@ export const AddEmployeeForm = ({ newEmployee, setNewEmployee, onAdd, onClose })
     return (
         <div className={cl.form} onClick={onClose}>
             <div className={cl.form_change} onClick={(e) => e.stopPropagation()}>
-                <input 
-                    type="text" 
+                <input
+                    type="text"
                     placeholder="Имя сотрудника"
                     name="name"
                     value={newEmployee.name}
                     onChange={handleNewEmployeeChange}
                 />
-                <input 
-                    type="text" 
+                <input
+                    type="text"
                     placeholder="Телефон"
                     name="phone"
                     value={newEmployee.phone}
                     onChange={handleNewEmployeeChange}
                 />
-                <input 
-                    type="text" 
+                <input
+                    type="text"
                     placeholder="Дата рождения"
                     name="birthday"
                     value={newEmployee.birthday}
@@ -40,7 +40,7 @@ export const AddEmployeeForm = ({ newEmployee, setNewEmployee, onAdd, onClose })
                     <option value="driver">Водитель</option>
                 </select>
                 <div className={cl.checkboxContainer}>
-                    <input 
+                    <input
                         type="checkbox"
                         name="isArchive"
                         id="add_archive"

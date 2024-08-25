@@ -1,9 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import initialBase from '../utils/employees.json' 
+import initialBase from '../utils/employees.json'
 
 const initialState = {
-    list: initialBase,
-}
+    list: initialBase.map(employee => ({
+      ...employee,
+      isVisible: !employee.isArchive,
+      isFiltered: true
+    })),
+  };
 
 export const employeesSlice = createSlice({
     name: 'Employees',
@@ -21,7 +25,7 @@ export const employeesSlice = createSlice({
         },
         createEmployee: (state, action) => {
             const addedEployee = action.payload;
-            state.list.push(addedEployee); 
+            state.list.push(addedEployee);
         }
     },
 })

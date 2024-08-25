@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { employeeActions } from '../../store/employee.slice.ts';
 import { employeesSlice } from '../../store/employees.slice.ts';
-import { RootState } from '../../store/store.ts'; 
+import { RootState } from '../../store/store.ts';
 import { FiltersAndSort } from '../../components/FiltersAndSort/FiltersAndSort.tsx';
 import { EmployeeList } from '../../components/EmployeeList/EmployeeList.tsx';
 import { EmployeeEditForm } from '../../components/EmployeeEditForm/EmployeeEditForm.tsx';
@@ -13,8 +13,6 @@ export const Home = () => {
     const dispatch = useDispatch()
     const employees = useSelector((state: RootState) => state.employees.list);
     const selectedEmployee = useSelector((state: RootState) => state.employee);
-    const [sortedEmployees, setSortedEmployees] = useState(employees);
-    const [backEmployees, setBackEmployees] = useState(employees);
     const [isChecked, setIsChecked] = useState(false);
     const [isOpenForm, setIsOpenForm] = useState(false);
     const [isOpenAddForm, setIsOpenAddForm] = useState(false);
@@ -23,7 +21,9 @@ export const Home = () => {
         phone: '',
         birthday: '',
         role: 'cook',
-        isArchive: false
+        isArchive: false,
+        isVisible: true,
+        isFiltered: true
     });
 
     const handleFormChange = (employee) => {
@@ -40,19 +40,21 @@ export const Home = () => {
             alert('Пожалуйста, заполните все поля!');
             return;
         }
-        
+
         const employeeWithId = { ...newEmployee, id: Date.now() };
-        
-        dispatch(employeesSlice.actions.createEmployee(employeeWithId));
-        
+
         setNewEmployee({
             name: '',
             phone: '',
             birthday: '',
             role: 'cook',
-            isArchive: false
+            isArchive: false,
+            isVisible: true,
+            isFiltered: true
         });
-        
+
+        dispatch(employeesSlice.actions.createEmployee(employeeWithId));
+
         handleAddForm();
     };
 
@@ -68,43 +70,33 @@ export const Home = () => {
         };
     }, [isOpenForm, isOpenAddForm]);
 
-    useEffect(() => {
-        if (isChecked) {
-            setBackEmployees(sortedEmployees)
-            setSortedEmployees(sortedEmployees.filter(employee => employee.isArchive === true))
-        } else {
-            setSortedEmployees(backEmployees)
-        }
-    }, [employees, isChecked]);
 
     return (
         <div className={cl.home}>
-            <FiltersAndSort 
+            <FiltersAndSort
                 employees={employees}
-                sortedEmployees={sortedEmployees}
-                setSortedEmployees={setSortedEmployees}
                 isChecked={isChecked}
                 setIsChecked={setIsChecked}
             />
-            <EmployeeList 
-                employees={sortedEmployees} 
-                onEmployeeClick={handleFormChange} 
+            <EmployeeList
+                employees={employees}
+                onEmployeeClick={handleFormChange}
             />
             <div onClick={handleAddForm} className={cl.add_button}>
                 <p>Добавить сотрудника</p>
             </div>
             {isOpenForm && (
-                <EmployeeEditForm 
-                    employee={selectedEmployee} 
-                    onClose={handleFormClose} 
+                <EmployeeEditForm
+                    employee={selectedEmployee}
+                    onClose={handleFormClose}
                 />
             )}
             {isOpenAddForm && (
-                <AddEmployeeForm 
-                    newEmployee={newEmployee} 
-                    setNewEmployee={setNewEmployee} 
-                    onAdd={handleAddEmployee} 
-                    onClose={handleAddForm} 
+                <AddEmployeeForm
+                    newEmployee={newEmployee}
+                    setNewEmployee={setNewEmployee}
+                    onAdd={handleAddEmployee}
+                    onClose={handleAddForm}
                 />
             )}
         </div>

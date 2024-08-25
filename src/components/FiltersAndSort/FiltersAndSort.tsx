@@ -1,10 +1,14 @@
 import React from 'react';
 import cl from './FiltersAndSort.module.scss';
+import { useDispatch } from 'react-redux';
+import { employeesSlice } from '../../store/employees.slice.ts';
 
-export const FiltersAndSort = ({ employees, sortedEmployees, setSortedEmployees, isChecked, setIsChecked }) => {
+export const FiltersAndSort = ({ employees, isChecked, setIsChecked }) => {
+    const dispatch = useDispatch();
+
     const sortEmployees = (event) => {
         const sortType = event.target.value;
-        let sortedList = [...sortedEmployees];
+        let sortedList = [...employees];
         sortedList = sortedList.map(obj => {
             const {birthday, ...other} = obj;
             const newBirthday = birthday.split('.').reverse().join('-');
@@ -26,17 +30,55 @@ export const FiltersAndSort = ({ employees, sortedEmployees, setSortedEmployees,
                 break;
             default:
                 break;
-        }
-        setSortedEmployees(sortedList);
+        };
+
+        dispatch(employeesSlice.actions.setEmployees(sortedList))
     };
 
     const filterList = (event) => {
         const filterType = event.target.value;
         if (!filterType) return;
-        setSortedEmployees(filterType === 'all' ? employees : employees.filter(e => e.role === filterType));
+
+        let filteredEmployees = [];
+
+        employees.forEach(employee => {
+            if (filterType === 'all') {
+                filteredEmployees.push({
+                    ...employee,
+                    isVisible: employee.isArchive == isChecked,
+                    isFiltered: true
+                })
+            } else {
+                if (employee.role === filterType) {
+                    filteredEmployees.push({
+                        ...employee,
+                        isVisible: employee.isArchive == isChecked,
+                        isFiltered: true
+                    })
+                } else {
+                    filteredEmployees.push({
+                        ...employee,
+                        isVisible: false,
+                        isFiltered: false
+                    })
+                }
+            }
+        });
+
+        dispatch(employeesSlice.actions.setEmployees(filteredEmployees))
     };
 
     const handleCheckboxChange = (event) => {
+        let filteredEmployees = [];
+
+        employees.forEach(employee => {
+            filteredEmployees.push({
+                ...employee,
+                isVisible: employee.isFiltered && employee.isArchive == event.target.checked
+            })
+        });
+
+        dispatch(employeesSlice.actions.setEmployees(filteredEmployees))
         setIsChecked(event.target.checked);
     };
 
@@ -55,8 +97,8 @@ export const FiltersAndSort = ({ employees, sortedEmployees, setSortedEmployees,
                 <option value="birthday-down">По дате рождения &#8595;</option>
             </select>
             <div className={cl.checkboxContainer}>
-                <input 
-                    type="checkbox" 
+                <input
+                    type="checkbox"
                     id="archive-checkbox"
                     checked={isChecked}
                     onChange={handleCheckboxChange}
